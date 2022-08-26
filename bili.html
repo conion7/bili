@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>bili</title>
+  <link rel="icon" href="https://tool.conion.vip/bili/getImage?address=101753c805e6de91f0746428319f634824644402" type="images/jpeg" />
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+    body {
+	  background: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2F36d2265b01705f23e7cd7c8232209bacebf54237.jpg&refer=http%3A%2F%2Fi1.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619938008&t=c1e62cb91ae234bf11d7deef8ab7e04d");
+      width: 100%;
+      height: 100%;
+      background-color: #ffffff;
+	  background-size:100%,100%;
+	  background-attachment: fixed
+    }
+    a:hover {color: black;text-decoration: none;}
+    .search{
+      width: 40%;
+      height: 38px;
+      margin: auto;
+      margin-top: 20px;
+    }
+    .follow-main{
+      width: 100%;
+      margin: auto;
+      margin-top: 50px;
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+    .nofollow{
+      display: none;
+    }
+	a{
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  font-size: 24px;
+	  color: red;
+	}
+    .list-item{
+      margin: 20px;
+      margin-left: 50px;
+      margin-right: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid gray;
+	  background-color: #D3D3D3;
+	  border-radius: 20px /20px;
+    }
+	.list-item:hover{
+	  background-color: #ffffff;
+	}
+    .content{
+      padding: 5px;
+      
+    }
+    .avatar{
+      width: 96px;
+      height: 96px;
+	  margin-left: 30px;
+      border-radius: 50%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!--<div style='width:100%; height: 100%' id='load1'><div style='width:100%; height: 100%' id='load2'></div></div>-->
+  <div style="width: 100%">
+    <div class="input-group mb-3 search">
+      <input type="text" id="uid" class="form-control" placeholder="请输入uid进行查询" required>
+      <button class="btn btn-outline-secondary" id="submit_desc">正序查询</button>
+	  <button class="btn btn-outline-secondary" id="submit_asc">倒序查询</button>
+    </div>
+  </div>
+
+  <div class="follow-main">
+    <div class="follow-header"></div>
+    <div class="follow-content">
+      <div class="nofollow"></div>
+      <div class="content">
+        <ul id="content-list" style="list-style: none; padding-right: 40px">
+          <li class="list-item">
+            <div style="display: flex">
+              <a href="https://space.bilibili.com/169612564" target="_blank">
+                <img class="avatar" src="https://tool.conion.vip/bili/getImage?address=101753c805e6de91f0746428319f634824644402">
+              </a>
+              <div style="margin-left: 10px; padding: 10px">
+                <a href="https://space.bilibili.com/169612564" target="_blank">
+                  <p>Conion7</p>
+                </a>
+                <p class="text-dark">一条咸鱼假装程序猿</p>
+              </div>
+            </div>
+            <div style="padding: 15px; display:flex; flex-direction:column; justify-content:center">
+              <b>本站数据均来自于B站<br>
+			  B站限制最多只能正序倒序各获取250个<br>
+			  超过500个关注数无法获取中间部分<br>
+			  仅供娱乐学习使用<br>
+			  ------2022.2.21------<br>
+			  B站已关闭倒序接口<br>
+			  最多只能获取最近关注的250个<br>
+			  </b>
+			  <!--<b>本站服务器IP被B站限制访问了<br>暂停访问一晚依然没解封<br>感觉是被B站永久限制了<br>解决办法是改成云函数模式<br>下周一定（鸽）<br>2021/6/29</b>-->
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var followNum = -1;//关注的up主的个数
+    var uid = 0;
+    var pn = 1;//分页获取关注列表，b站最多只允许访问5页
+	var ps = 20;//每次请求多少个，最大50
+	var order = "desc";//默认降序
+    $(document).ready(function(){
+      $(document).scroll(function() {
+      var scroH = $(document).scrollTop();  //滚动高度
+      var viewH = $(window).height();  //可见高度 
+      var contentH = $(document).height();  //内容高度
+      if(scroH >100){  //距离顶部大于100px时
+      }
+      if (contentH - (scroH + viewH) <= 100){  //距离底部高度小于100px
+      }  
+      if (contentH - (scroH + viewH) <= 10){  //滚动条滑到底部啦
+        var listSize = $("ul").children().length;
+        console.log(followNum + "---" + listSize);
+        if(followNum > listSize - 1){
+          if(pn >= 5){
+			alert("本站是以游客身份访问数据，b站最多只允许游客访问5页共250个，剩下的只有up主本人可以查看");
+		  } else {
+			pn++;
+			$.get("https://tool.conion.vip/bili/searchFollow?uid=" + uid + "&pn=" + pn + "&ps=" + ps + "&order=" + order, function(data, status){
+				var obj = data.data;
+				var list = obj["list"];
+				createList(list);
+			  })
+		  }
+        }
+      }  
+    });
+    })
+	//回车进行查询
+	$(function(){
+      $('#uid').bind('keypress',function(event){
+    	if(event.keyCode == "13"){
+    		search();
+      }});
+    });
+	//点击按钮查询
+    $("#submit_desc").click(function(){
+	    order = "desc";
+    	search();
+    });
+	$("#submit_asc").click(function(){
+	    order = "asc";
+		alert("╮（╯＿╰）╭\n给你说了不能查倒序，还非要按！！！\no(一︿一+)o");
+    	//search();
+    });
+	
+    
+	function search(){
+      uid = $("#uid").val();
+      if(uid == '' || uid.length == 0){
+        alert("请输入您要查询的b站id");
+      } else if(isNaN(uid)){
+		alert("暂不支持名称查询，请输入uid进行查询");
+	  } else {
+        $("ul").empty();
+		pn = 1;
+		$.ajaxSetup({
+		  async: false
+		});
+        $.get("https://tool.conion.vip/bili/searchSelf2?uid=" + uid, function(data, status){
+          var obj = data.data;
+          followNum = obj['following'];
+		  if(followNum <= 100) ps = 20;
+		  else if(followNum > 100 && followNum <= 150) ps = 30;
+		  else if(followNum > 150 && followNum <= 200) ps = 40;
+		  else ps = 50;
+        })
+		
+		$.get("https://tool.conion.vip/bili/searchSelf1?uid=" + uid, function(data, status){
+          var obj = data.data;
+          createSelf(obj, followNum);
+        })
+        $.get("https://tool.conion.vip/bili/searchFollow?uid=" + uid + "&pn=" + pn + "&ps=" + ps + "&order=" + order, function(data, status){
+		  var code = data.code;
+		  if(code == 0){
+			var obj = data.data;
+			var list = obj["list"];
+			createList(list);
+		  } else {
+			alert("查询失败，可能是该用户进行了隐私设置");
+		  }
+          
+        })
+      }
+    }
+
+    function createSelf(obj, followNum){
+      var temp = obj["face"].split('/');
+      var temp1 = temp[5].split('.');
+      var imgUrl = "https://tool.conion.vip/bili/getImage?address=" + temp1[0];
+      var text = '<li class="list-item"><div style="display: flex"><a href="https://space.bilibili.com/'+obj["mid"]+'" target="_blank"><img class="avatar" src="'+imgUrl+'"></a><div style="margin-left: 10px; padding: 10px"><a href="https://space.bilibili.com/'+obj["mid"]+'" target="_blank"><p>'+obj["name"]+'</p></a><p class="text-dark">'+obj["sign"] + ' '+'</p></div></div><div style="padding: 15px"><p class="text-dark" style="float: right;">您关注了 <b>'+followNum+'</b> 个up主</p></div></li>';
+      $("#content-list").append(text);
+    }
+
+    function getFollowNum(uid){
+      $.get("https://tool.conion.vip/bili/searchSelf2?uid=" + uid, function(data, status){
+        var obj = data.data;
+        return obj['following'];
+      })
+    }
+
+    function createList(list){
+      for(var i = 0; i < list.length; i++){
+        var mtime = list[i]["mtime"];
+        console.log(list[i]["face"]);
+        var temp = list[i]["face"].split('/');
+        var temp1 = temp[5].split('.');
+        var imgUrl = "https://tool.conion.vip/bili/getImage?address=" + temp1[0];
+        var text = '<li class="list-item"><div style="display: flex"><a href="https://space.bilibili.com/'+list[i]["mid"]+'" target="_blank"><img class="avatar" src="'+imgUrl+'"></a><div style="margin-left: 10px; padding: 10px"><a href="https://space.bilibili.com/'+list[i]["mid"]+'" target="_blank"><p>'+list[i]["uname"]+'</p></a><p class="text-dark">'+list[i]["sign"]+'</p></div></div><div style="padding: 15px"><p class="text-dark">关注于 <b>'+getTime(mtime)+'</b></p><p class="text-dark" style="float: right;">已关注 <b>'+getDay(mtime)+'</b> 天</p></div></li>';
+        $("#content-list").append(text);
+      }
+    }
+
+    function getTime(mtime){
+      var date = new Date(mtime * 1000);
+      return date.getFullYear()+"年"+(date.getMonth() + 1)+"月"+date.getDate()+"日";
+    }
+
+    function getDay(mtime){
+      var date = new Date();
+      var day = (date.getTime()/1000 - mtime) / (60 * 60 * 24);
+      return Math.ceil(day);
+    }
+	
+  </script>
+
+  <!-- 百度统计脚本 -->
+  <!-- <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "删";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script> -->
+
+</body>
+
+</html>
